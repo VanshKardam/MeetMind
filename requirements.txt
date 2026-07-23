@@ -1,0 +1,47 @@
+# ─────────────────────────────────────────────
+# MeetMind – AI Meeting Assistant
+# ─────────────────────────────────────────────
+
+# ── Streamlit UI ──────────────────────────────
+streamlit>=1.35.0
+
+# ── Audio / Video Ingestion ───────────────────
+yt-dlp>=2024.4.9           # Download audio from YouTube URLs
+pydub>=0.25.1              # Audio processing & format conversion
+ffmpeg-python>=0.2.0       # FFmpeg bindings (ffmpeg binary required separately)
+
+# ── Transcription (local Whisper) ────────────
+numba>=0.59.1              # Required for python 3.12 compatibility
+openai-whisper>=20231117   # OpenAI Whisper (runs locally)
+torch>=2.2.0               # PyTorch backend for Whisper
+torchaudio>=2.2.0          # Audio I/O for torch
+
+# ── Translation (Hindi → English) ────────────
+deep-translator>=1.11.4    # Hindi-to-English translation (Google Translate backend)
+langdetect>=1.0.9          # Auto language detection
+
+# ── LangChain / LCEL + Mistral API ───────────
+langchain>=0.2.0
+langchain-core>=0.2.0
+langchain-community>=0.2.0
+langchain-mistralai>=0.1.0  # Mistral chat + embedding models
+mistralai>=0.4.0            # Official Mistral Python SDK
+
+# ── RAG Pipeline – Vector Store ───────────────
+chromadb>=0.5.0            # Local vector database
+sentence-transformers>=3.0.0  # Fallback local embeddings (optional)
+
+# ── Document / Text Utilities ─────────────────
+tiktoken>=0.7.0            # Token counting for chunk sizing
+python-dotenv>=1.0.0       # Load API keys from .env
+
+# ── Export: PDF & TXT ─────────────────────────
+fpdf2>=2.7.9               # Generate PDF reports
+
+# ── General Utilities ─────────────────────────
+numpy>=1.26.0
+requests>=2.31.0
+tqdm>=4.66.0               # Progress bars
+
+#print
+rich>=14.18.0
