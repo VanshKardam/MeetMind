@@ -13,6 +13,7 @@ def download_youtube_audio(url : str) -> str:
         "outtmpl" : output_path,
         "noplaylist" : True,
         "no_warnings" : False,
+        "extractor_args": {"youtube": {"player_client": ["android", "ios"]}},
         "postprocessors" : [
             {
                 "key" : "FFmpegExtractAudio",
@@ -40,9 +41,9 @@ def convert_to_wav(input_path : str) -> str:
         print(f"Error converting {input_path} to WAV: {e}")
         return None
 
-def chunk_audio(wav_path : str, chunk_minutes : int = 10) -> list:
+def chunk_audio(wav_path : str, chunk_length_seconds : int = 600) -> list:
     audio = AudioSegment.from_wav(wav_path)
-    chunk_ms = chunk_minutes * 60 * 1000 #milliseconds
+    chunk_ms = chunk_length_seconds * 1000 #milliseconds
     chunks = []
     for i, start in enumerate(range(0, len(audio), chunk_ms)):
         chunk = audio[start : start + chunk_ms]
@@ -52,7 +53,7 @@ def chunk_audio(wav_path : str, chunk_minutes : int = 10) -> list:
     
     return chunks
 
-def process_input(source : str) -> list:
+def process_input(source : str, chunk_length_seconds : int = 600) -> list:
     if source.startswith("http://") or source.startswith("https://"):
         print("Detected YouTube URL. Downloading audio...")
         downloaded_path = download_youtube_audio(source)
@@ -67,8 +68,7 @@ def process_input(source : str) -> list:
         raise ValueError("Failed to process audio input")
     
     print("Audio prepared. Chunking...")
-    chunks = chunk_audio(wav_path)
+    chunks = chunk_audio(wav_path, chunk_length_seconds)
 
-    print(f"Generated {len(chunks)} audio chunks.")
+    print(f"Generated {len(chunks)} audio chunks.") 
     return chunks
-    
