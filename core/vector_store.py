@@ -45,7 +45,7 @@ def load_vector_store() -> Chroma:
     )
     return vector_store
 
-def get_retriever(vector_store : Chroma, k : int = 4):
+def get_retriever(vector_store : Chroma, k : int = 3):
     return vector_store(
         search_type = "similarity",
         search_kwargs = {"k" : k}
