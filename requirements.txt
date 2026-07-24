@@ -29,6 +29,8 @@ mistralai>=0.4.0            # Official Mistral Python SDK
 
 # ── RAG Pipeline – Vector Store ───────────────
 chromadb>=0.5.0            # Local vector database
+protobuf<4                 # Fixes protobuf Descriptor TypeError inside chromadb
+langchain-chroma>=0.1.0    # LangChain integration for ChromaDB
 sentence-transformers>=3.0.0  # Fallback local embeddings (optional)
 
 # ── Document / Text Utilities ─────────────────

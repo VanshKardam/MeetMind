@@ -11,8 +11,8 @@ EMBEDDING_MODEL = "mistral-embed"
 
 def get_embeddings():
     return MistralAIEmbeddings(
-        model_name = EMBEDDING_MODEL,
-        model_kwargs = {"device" : "cpu"}
+        model = EMBEDDING_MODEL,
+        mistral_api_key = os.getenv("MISTRAL_API_KEY")
     )
 
 def build_vector_store(transcript : str) -> Chroma:
@@ -46,7 +46,7 @@ def load_vector_store() -> Chroma:
     return vector_store
 
 def get_retriever(vector_store : Chroma, k : int = 3):
-    return vector_store(
+    return vector_store.as_retriever(
         search_type = "similarity",
         search_kwargs = {"k" : k}
     )
