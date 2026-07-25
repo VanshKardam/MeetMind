@@ -22,7 +22,10 @@ downloads/
 # ChromaDB / Vector Store Data
 chroma_db/
 db/
+vector_db/
 
+# Exported Reports
+meetmind_report.txt
 # Distribution / packaging
 build/
 develop-eggs/
