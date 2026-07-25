@@ -1,51 +1,76 @@
 # MeetMind: Local RAG Pipeline for Audio Intelligence
 
-![Status: Active Development](https://img.shields.io/badge/Status-Active%20Development-yellow)
+![Status: Completed](https://img.shields.io/badge/Status-Completed-success)
 ![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue)
 ![LangChain](https://img.shields.io/badge/LangChain-LCEL-green)
-![Local Compute](https://img.shields.io/badge/Privacy-100%25%20Local-success)
-
-> 🚧 **Note:** This project is currently in active development. The core RAG and Audio processing pipelines are implemented, and UI integration is currently underway.
+![Streamlit](https://img.shields.io/badge/Streamlit-UI-red)
 
 ## 📌 Overview
 
-**MeetMind** is a production-ready, privacy-focused productivity tool designed to solve the problem of lost value in professional meetings. While commercial tools (like Otter.ai) exist, they are often expensive and raise severe data privacy concerns by uploading sensitive corporate audio to third-party servers.
+**MeetMind** is a production-ready, privacy-focused productivity tool designed to solve the problem of lost value in professional meetings. While commercial tools exist, they are often expensive and raise data privacy concerns. 
 
-MeetMind solves this by providing a **100% offline audio transcription and local Retrieval-Augmented Generation (RAG) pipeline**. It transcribes video/audio files locally, extracts smart summaries and action items, and allows users to have a contextual chat with their historical meeting files—all without audio ever leaving their local machine.
+MeetMind solves this by providing a highly capable offline audio transcription and local Retrieval-Augmented Generation (RAG) pipeline. It transcribes video/audio files, extracts smart summaries and action items, and allows users to have a contextual chat with their historical meeting files. 
 
 ## ✨ Core Features
 
+*   **Premium Streamlit Dashboard:** A beautiful, dark-themed responsive UI for executing pipelines and interacting with results across a 6-tab dashboard.
 *   **Flexible Data Ingestion:** Seamlessly processes YouTube URLs or uploaded local audio/video files (MP4, MP3, WAV).
-*   **Privacy-First Transcription:** Runs OpenAI Whisper locally on the machine to eliminate transcription API costs and protect sensitive data. Supports English, Hindi, and Hinglish.
-*   **Automated Intelligence:** Handles Hindi-to-English translation, smart bulleted summaries, and automated extraction of action items using Mistral AI.
-*   **RAG-Powered Meeting Q&A:** Employs a full Retrieval-Augmented Generation workflow allowing users to ask specific semantic questions about what was discussed across multiple meetings.
-*   **Seamless Reporting:** Instant PDF export capabilities for downloading generated meeting notes and action items.
+*   **Dual-Engine Transcription:** 
+    *   **English:** Runs OpenAI Whisper locally on the machine to eliminate transcription API costs and protect sensitive data. 
+    *   **Hinglish:** Uses Sarvam AI's specialized API with automated 29-second audio chunking for precise regional language transcription.
+*   **Automated Intelligence:** Handles smart bulleted summaries, extraction of action items, key decisions, and questions using LangChain and Mistral AI.
+*   **RAG-Powered Meeting Q&A:** Employs a full Retrieval-Augmented Generation workflow allowing users to ask specific semantic questions about what was discussed in the meeting.
+*   **Seamless Reporting:** Instant text export capabilities for downloading generated meeting notes and action items.
 
 ## 🏗️ Technical Architecture
 
-MeetMind is built with a focus on modularity, zero-cost operation, and maximum privacy, leveraging a mix of local edge-computing for heavy workloads and free-tier APIs for generation.
+MeetMind is built with a focus on modularity, leveraging a mix of local edge-computing for heavy workloads and free-tier APIs for generation.
 
 ### The Tech Stack
 
-*   **Audio Processing:** `yt-dlp` + `ffmpeg` (Downloading and converting video inputs)
-*   **Transcription Engine:** Local OpenAI Whisper (`base`/`small` models for CPU optimization)
-*   **LLM Generation:** Mistral AI (Free API Tier) for summarization and precise task extraction.
-*   **Embeddings:** HuggingFace `all-MiniLM-L6-v2` (Local generation for text chunks)
-*   **Vector Database:** ChromaDB (Local persistent client for semantic search)
-*   **Orchestration:** LangChain LCEL (LangChain Expression Language for composable pipelines)
 *   **User Interface:** Streamlit (Clean, interactive Python-based web dashboard)
+*   **Audio Processing:** `yt-dlp` + `ffmpeg` + `pydub`
+*   **Transcription Engine:** Local OpenAI Whisper + Sarvam AI
+*   **LLM Generation:** Mistral AI (`mistral-medium-latest`) for summarization and precise task extraction.
+*   **Embeddings:** Mistral Embed API (`mistral-embed`)
+*   **Vector Database:** ChromaDB (Local persistent client)
+*   **Orchestration:** LangChain LCEL (LangChain Expression Language for composable pipelines)
 
-### Pipeline Flow
+## 🚀 Installation & Usage
 
-1.  **Ingestion:** Audio/Video is downloaded or uploaded.
-2.  **Processing:** `ffmpeg` normalizes the audio stream.
-3.  **Transcription:** Local Whisper transcribes the audio into text, generating timestamps.
-4.  **Vectorization:** LangChain splits the long transcript into overlapping semantic chunks. HuggingFace models embed these chunks into ChromaDB.
-5.  **Retrieval & Generation:** User queries the UI. The query is embedded, relevant transcript chunks are retrieved from ChromaDB, and passed to Mistral AI via LCEL to generate a highly contextual answer.
+1. **Clone the repository and enter the directory:**
+   ```bash
+   git clone https://github.com/your-username/MeetMind.git
+   cd MeetMind
+   ```
 
-## 🚀 Installation & Usage (Coming Soon)
+2. **Set up Environment Variables:**
+   Create a `.env` file in the root directory and add your API keys:
+   ```env
+   MISTRAL_API_KEY="your_mistral_api_key_here"
+   SARVAM_API_KEY="your_sarvam_api_key_here"
+   WHISPER_MODEL="small"
+   SARVAM_STT_MODEL="saaras:v2.5"
+   ```
 
-*Instructions for setting up the virtual environment, installing dependencies (including ffmpeg), and running the Streamlit app will be published upon the v1.0 release.*
+3. **Install Dependencies:**
+   Ensure you have Python 3.10+ installed. Then install the required packages:
+   ```bash
+   python -m venv .venv
+   .venv\Scripts\activate
+   pip install -r requirements.txt
+   ```
+   *(Note: You must have FFmpeg installed on your system for audio processing).*
+
+4. **Run the Application:**
+   For Windows users, we have provided a convenient launcher script. Simply run:
+   ```bash
+   .\run.bat
+   ```
+   Alternatively, you can manually start the Streamlit server:
+   ```bash
+   streamlit run app.py
+   ```
 
 ---
 *Developed as a showcase of Multi-Modal AI and Edge-Computing architectures.*
