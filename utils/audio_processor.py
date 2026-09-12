@@ -15,6 +15,8 @@ def download_youtube_audio(url : str) -> str:
         "no_warnings" : False,
         "nocheckcertificate": True,
         "source_address": "0.0.0.0",  # Force IPv4 to avoid some cloud IP blocks
+        "impersonate": "chrome",      # Use curl-cffi to bypass YouTube 403 blocks
+        "js_runtimes": {"node": {}},  # Explicitly allow node for YouTube JS challenges
         # Let yt-dlp automatically determine the best client
         "postprocessors" : [
             {
