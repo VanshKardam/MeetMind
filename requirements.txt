@@ -25,6 +25,8 @@ langchain>=0.2.0
 langchain-core>=0.2.0
 langchain-community>=0.2.0
 langchain-mistralai>=0.1.0  # Mistral chat + embedding models
+langchain-google-genai>=1.0.0
+langchain-groq>=0.1.0
 mistralai>=0.4.0            # Official Mistral Python SDK
 
 # ── RAG Pipeline – Vector Store ───────────────

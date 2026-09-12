@@ -1,20 +1,15 @@
 # Actionable items, decision, questions
 
-from langchain_mistralai import ChatMistralAI
+
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables import RunnablePassthrough, RunnableLambda
-import os
 
-def get_llm():
-    return ChatMistralAI(
-        model = "mistral-medium-latest",
-        mistral_api_key = os.getenv("MISTRAL_API_KEY"),
-        temperature = 0.1
-    )
+
+from core.llm_utils import get_llm
 
 def build_chain(system_prompt : str):
-    llm = get_llm()
+    llm = get_llm(temperature=0.1)
     return (RunnablePassthrough() | RunnableLambda(lambda x : {"text" : x}) | ChatPromptTemplate.from_messages([
         ("system", system_prompt),
         ("human", "{text}"),
