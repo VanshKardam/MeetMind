@@ -402,10 +402,8 @@ st.markdown("""
     }
     .sidebar-info strong { color: #94a3b8; }
     .sidebar-footer {
-        position: absolute;
-        bottom: 1.5rem;
-        left: 1rem;
-        right: 1rem;
+        margin-top: 2rem;
+        padding-bottom: 1rem;
         text-align: center;
         color: #334155;
         font-size: 0.7rem;

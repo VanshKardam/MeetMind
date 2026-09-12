@@ -1,13 +1,25 @@
 from pytubefix import YouTube
 from pydub import AudioSegment
 import os
+import warnings
+
+# Suppress harmless pydub syntax warnings on Python 3.12+
+warnings.filterwarnings("ignore", category=SyntaxWarning, module="pydub")
 
 DOWNLOAD_DIR = "downloads"
 os.makedirs(DOWNLOAD_DIR, exist_ok=True)
 
 def download_youtube_audio(url : str) -> str:
-    yt = YouTube(url, client='WEB')
-    stream = yt.streams.get_audio_only()
+    try:
+        # The WEB client now requires a PoToken on headless servers. 
+        # Using the ANDROID or IOS client bypasses this restriction.
+        yt = YouTube(url, client='ANDROID')
+        stream = yt.streams.get_audio_only()
+    except Exception:
+        # Fallback to IOS if ANDROID fails
+        yt = YouTube(url, client='IOS')
+        stream = yt.streams.get_audio_only()
+        
     filename = stream.download(output_path=DOWNLOAD_DIR)
     return filename
 
