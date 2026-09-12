@@ -8,6 +8,7 @@ streamlit>=1.35.0
 # ── Audio / Video Ingestion ───────────────────
 yt-dlp>=2024.4.9           # Download audio from YouTube URLs
 pydub>=0.25.1              # Audio processing & format conversion
+pyaudioop>=0.3.1           # Required for pydub in Python 3.13+ (audioop was removed)
 ffmpeg-python>=0.2.0       # FFmpeg bindings (ffmpeg binary required separately)
 
 # ── Transcription (local Whisper) ────────────
