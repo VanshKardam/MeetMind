@@ -10,11 +10,19 @@ DOWNLOAD_DIR = "downloads"
 os.makedirs(DOWNLOAD_DIR, exist_ok=True)
 
 def download_youtube_audio(url : str) -> str:
-    """Download audio from YouTube using yt-dlp to bypass PoToken and SABR blocks."""
+    """Download audio from YouTube using yt-dlp with nodejs runtime."""
     ydl_opts = {
         'format': 'bestaudio/best',
         'outtmpl': os.path.join(DOWNLOAD_DIR, '%(id)s.%(ext)s'),
         'quiet': True,
+        'no_warnings': True,
+        # Use nodejs as JS runtime (deno is not available on Streamlit Cloud)
+        'js_runtimes': 'nodejs',
+        # Mimic a real browser to avoid 403 on datacenter IPs
+        'http_headers': {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
+            'Accept-Language': 'en-US,en;q=0.9',
+        },
     }
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
         info = ydl.extract_info(url, download=True)
