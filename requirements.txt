@@ -6,7 +6,7 @@
 streamlit>=1.35.0
 
 # ── Audio / Video Ingestion ───────────────────
-pytubefix>=11.1.0          # Download audio from YouTube URLs (reliably bypasses bot blocks)
+yt-dlp>=2024.0.0          # Robust YouTube downloader (bypasses PoToken & SABR blocks)
 audio-recorder-streamlit==0.0.10
 pydub>=0.25.1              # Audio processing & format conversion
 audioop-lts>=0.2.1 ; python_version >= '3.13'  # Required for pydub in Python 3.13+ (audioop was removed)

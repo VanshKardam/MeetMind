@@ -1,4 +1,4 @@
-from pytubefix import YouTube
+import yt_dlp
 from pydub import AudioSegment
 import os
 import warnings
@@ -10,17 +10,15 @@ DOWNLOAD_DIR = "downloads"
 os.makedirs(DOWNLOAD_DIR, exist_ok=True)
 
 def download_youtube_audio(url : str) -> str:
-    try:
-        # The WEB client now requires a PoToken on headless servers. 
-        # Using the ANDROID or IOS client bypasses this restriction.
-        yt = YouTube(url, client='ANDROID')
-        stream = yt.streams.get_audio_only()
-    except Exception:
-        # Fallback to IOS if ANDROID fails
-        yt = YouTube(url, client='IOS')
-        stream = yt.streams.get_audio_only()
-        
-    filename = stream.download(output_path=DOWNLOAD_DIR)
+    """Download audio from YouTube using yt-dlp to bypass PoToken and SABR blocks."""
+    ydl_opts = {
+        'format': 'bestaudio/best',
+        'outtmpl': os.path.join(DOWNLOAD_DIR, '%(id)s.%(ext)s'),
+        'quiet': True,
+    }
+    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+        info = ydl.extract_info(url, download=True)
+        filename = ydl.prepare_filename(info)
     return filename
 
 def convert_to_wav(input_path : str) -> str:
