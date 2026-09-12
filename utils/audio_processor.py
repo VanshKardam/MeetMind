@@ -13,7 +13,9 @@ def download_youtube_audio(url : str) -> str:
         "outtmpl" : output_path,
         "noplaylist" : True,
         "no_warnings" : False,
-        "extractor_args": {"youtube": {"player_client": ["android", "ios"]}},
+        "nocheckcertificate": True,
+        "source_address": "0.0.0.0",  # Force IPv4 to avoid some cloud IP blocks
+        # Let yt-dlp automatically determine the best client
         "postprocessors" : [
             {
                 "key" : "FFmpegExtractAudio",
