@@ -16,6 +16,7 @@ numba>=0.59.1              # Required for python 3.12 compatibility
 openai-whisper>=20231117   # OpenAI Whisper (runs locally)
 torch>=2.2.0               # PyTorch backend for Whisper
 torchaudio>=2.2.0          # Audio I/O for torch
+torchvision>=0.17.0        # Vision transforms (required by some transformers imports)
 
 # ── Translation (Hindi → English) ────────────
 deep-translator>=1.11.4    # Hindi-to-English translation (Google Translate backend)
