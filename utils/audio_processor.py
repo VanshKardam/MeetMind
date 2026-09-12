@@ -16,8 +16,8 @@ def download_youtube_audio(url : str) -> str:
         'outtmpl': os.path.join(DOWNLOAD_DIR, '%(id)s.%(ext)s'),
         'quiet': True,
         'no_warnings': True,
-        # Use nodejs as JS runtime (deno is not available on Streamlit Cloud)
-        'js_runtimes': {'nodejs': {}},
+        # Use mediaconnect player — no JS runtime needed, bypasses PoToken/SABR
+        'extractor_args': {'youtube': ['player_client=mediaconnect']},
         # Mimic a real browser to avoid 403 on datacenter IPs
         'http_headers': {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
