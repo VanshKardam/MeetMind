@@ -1,4 +1,4 @@
-import yt_dlp
+from pytubefix import YouTube
 from pydub import AudioSegment
 import os
 
@@ -6,31 +6,9 @@ DOWNLOAD_DIR = "downloads"
 os.makedirs(DOWNLOAD_DIR, exist_ok=True)
 
 def download_youtube_audio(url : str) -> str:
-    output_path = os.path.join(DOWNLOAD_DIR, "%(title)s.%(ext)s")
-
-    ydl_opts = {
-        "format" : "bestaudio/best",
-        "outtmpl" : output_path,
-        "noplaylist" : True,
-        "no_warnings" : False,
-        "nocheckcertificate": True,
-        "source_address": "0.0.0.0",  # Force IPv4 to avoid some cloud IP blocks
-        "impersonate": "chrome",      # Use curl-cffi to bypass YouTube 403 blocks
-        "js_runtimes": {"node": {}},  # Explicitly allow node for YouTube JS challenges
-        # Let yt-dlp automatically determine the best client
-        "postprocessors" : [
-            {
-                "key" : "FFmpegExtractAudio",
-                "preferredcodec" : "wav",
-                "preferredquality": "192"
-            }
-        ],
-        "quiet" : True,
-    }
-    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-        info = ydl.extract_info(url, download=True)
-        filename = ydl.prepare_filename(info).replace(".webm", ".wav").replace(".mp4", ".wav")
-
+    yt = YouTube(url, client='WEB')
+    stream = yt.streams.get_audio_only()
+    filename = stream.download(output_path=DOWNLOAD_DIR)
     return filename
 
 def convert_to_wav(input_path : str) -> str:

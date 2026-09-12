@@ -249,22 +249,26 @@ if "processing" not in st.session_state:
     st.session_state.processing = False
 
 # ──────────────────────────────────────────────
-# Sidebar
+# Hero Banner
 # ──────────────────────────────────────────────
-with st.sidebar:
-    st.markdown("""
-    <div class="sidebar-logo">
-        <h2>🧠 MeetMind</h2>
-        <p>AI Meeting Assistant</p>
-    </div>
-    """, unsafe_allow_html=True)
+st.markdown("""
+<div class="hero-banner">
+    <h1>🧠 MeetMind</h1>
+    <p>Transform any meeting recording into actionable insights — powered by Whisper, Sarvam AI, Gemini, Groq, Mistral & LangChain</p>
+</div>
+""", unsafe_allow_html=True)
 
-    st.markdown("#### 📥 Input Source")
+# ──────────────────────────────────────────────
+# Main Input Area
+# ──────────────────────────────────────────────
+st.markdown("### 📥 Analyze a New Meeting")
+col1, col2 = st.columns([2, 1])
+
+with col1:
     input_method = st.radio(
         "Choose input method",
         ["YouTube URL", "Upload Audio File"],
         horizontal=True,
-        label_visibility="collapsed",
     )
 
     source_url = None
@@ -274,29 +278,44 @@ with st.sidebar:
         source_url = st.text_input(
             "YouTube URL",
             placeholder="https://www.youtube.com/watch?v=...",
+            label_visibility="collapsed"
         )
     else:
         uploaded_file = st.file_uploader(
             "Upload an audio/video file",
             type=["mp3", "wav", "m4a", "mp4", "webm", "ogg"],
+            label_visibility="collapsed"
         )
 
-    st.markdown("---")
-    st.markdown("#### 🌐 Language")
+with col2:
     language = st.selectbox(
         "Select language",
-        ["English", "Hinglish (Hindi → English)"],
-        label_visibility="collapsed",
+        ["English", "Hinglish (Hindi → English)"]
     )
     lang_key = "hinglish" if "Hinglish" in language else "english"
-
-    st.markdown("---")
-
+    
+    st.markdown("<br>", unsafe_allow_html=True)
     analyze_clicked = st.button("🚀 Analyze Meeting", type="primary", use_container_width=True)
+
+st.markdown("---")
+
+# ──────────────────────────────────────────────
+# Sidebar
+# ──────────────────────────────────────────────
+with st.sidebar:
+    st.markdown("""
+    <div class="sidebar-logo">
+        <h2>🧠 MeetMind</h2>
+        <p>AI Meeting Assistant</p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    st.markdown("Welcome to **MeetMind**. Paste a YouTube URL or upload an audio file in the main window to get started.")
 
     # Download report button (only shown when results exist)
     if st.session_state.result:
         st.markdown("---")
+        st.markdown("#### 📄 Export Results")
         r = st.session_state.result
         report = (
             f"MEETMIND — MEETING REPORT\n"
@@ -320,16 +339,6 @@ with st.sidebar:
             mime="text/plain",
             use_container_width=True,
         )
-
-# ──────────────────────────────────────────────
-# Hero Banner
-# ──────────────────────────────────────────────
-st.markdown("""
-<div class="hero-banner">
-    <h1>🧠 MeetMind</h1>
-    <p>Transform any meeting recording into actionable insights — powered by Whisper, Sarvam AI, Gemini, Groq, Mistral &amp; LangChain</p>
-</div>
-""", unsafe_allow_html=True)
 
 # ──────────────────────────────────────────────
 # Pipeline Execution
@@ -560,10 +569,10 @@ else:
         color: #94a3b8;
     ">
         <div style="font-size: 4rem; margin-bottom: 1rem;">🎙️</div>
-        <h3 style="color: #64748b; font-weight: 600; margin-bottom: 0.5rem;">No meeting analyzed yet</h3>
+        <h3 style="color: #64748b; font-weight: 600; margin-bottom: 0.5rem;">Ready to Analyze</h3>
         <p style="font-size: 0.95rem; max-width: 400px; margin: 0 auto;">
-            Paste a YouTube URL or upload an audio file in the sidebar, then click
-            <strong>"🚀 Analyze Meeting"</strong> to get started.
+            Enter a YouTube URL or upload an audio file above, then click
+            <strong>"🚀 Analyze Meeting"</strong> to generate your insights.
         </p>
     </div>
     """, unsafe_allow_html=True)

@@ -11,28 +11,34 @@ def get_llm(temperature=0.3):
     Gemini, Groq, and Mistral models. It includes a delay to avoid rate limit 
     errors before falling back to the next model.
     """
+    models = []
+    
     # 1. Gemini (Best Performance, generous free tier)
-    gemini = ChatGoogleGenerativeAI(
-        model="gemini-1.5-flash",
-        google_api_key=os.getenv("GOOGLE_API_KEY"),
-        temperature=temperature
-    )
+    if os.getenv("GOOGLE_API_KEY"):
+        models.append(ChatGoogleGenerativeAI(
+            model="gemini-flash-latest",
+            google_api_key=os.getenv("GOOGLE_API_KEY"),
+            temperature=temperature
+        ))
     
     # 2. Groq (Very fast, excellent Llama3 performance)
-    groq = ChatGroq(
-        model="llama3-70b-8192",
-        api_key=os.getenv("GROQ_API_KEY"),
-        temperature=temperature
-    )
+    if os.getenv("GROQ_API_KEY"):
+        models.append(ChatGroq(
+            model="groq/compound",
+            api_key=os.getenv("GROQ_API_KEY"),
+            temperature=temperature
+        ))
 
     # 3. Mistral (Solid fallback)
-    mistral = ChatMistralAI(
-        model="mistral-small-latest",
-        mistral_api_key=os.getenv("MISTRAL_API_KEY"),
-        temperature=temperature
-    )
-    
-    models = [gemini, groq, mistral]
+    if os.getenv("MISTRAL_API_KEY"):
+        models.append(ChatMistralAI(
+            model="mistral-small-latest",
+            mistral_api_key=os.getenv("MISTRAL_API_KEY"),
+            temperature=temperature
+        ))
+        
+    if not models:
+        raise ValueError("No LLM API keys configured. Please add GOOGLE_API_KEY, GROQ_API_KEY, or MISTRAL_API_KEY to your .env file or Streamlit secrets.")
     
     @chain
     def llm_with_fallback(prompt):
