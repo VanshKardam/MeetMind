@@ -18,7 +18,7 @@ MeetMind solves this by providing a highly capable offline audio transcription a
 *   **Dual-Engine Transcription:** 
     *   **English:** Runs OpenAI Whisper locally on the machine to eliminate transcription API costs and protect sensitive data. 
     *   **Hinglish:** Uses Sarvam AI's specialized API with automated 29-second audio chunking for precise regional language transcription.
-*   **Automated Intelligence:** Handles smart bulleted summaries, extraction of action items, key decisions, and questions using LangChain and Mistral AI.
+*   **Automated Intelligence:** Handles smart bulleted summaries, extraction of action items, key decisions, and questions using a robust LLM fallback system (Gemini 1.5 Flash → Groq Llama-3 → Mistral Small) powered by LangChain.
 *   **RAG-Powered Meeting Q&A:** Employs a full Retrieval-Augmented Generation workflow allowing users to ask specific semantic questions about what was discussed in the meeting.
 *   **Seamless Reporting:** Instant text export capabilities for downloading generated meeting notes and action items.
 
@@ -31,7 +31,7 @@ MeetMind is built with a focus on modularity, leveraging a mix of local edge-com
 *   **User Interface:** Streamlit (Clean, interactive Python-based web dashboard)
 *   **Audio Processing:** `yt-dlp` + `ffmpeg` + `pydub`
 *   **Transcription Engine:** Local OpenAI Whisper + Sarvam AI
-*   **LLM Generation:** Mistral AI (`mistral-medium-latest`) for summarization and precise task extraction.
+*   **LLM Generation:** Robust Fallback System using Gemini 1.5 Flash, Groq (Llama-3 70B), and Mistral Small for summarization and precise task extraction.
 *   **Embeddings:** Mistral Embed API (`mistral-embed`)
 *   **Vector Database:** ChromaDB (Local persistent client)
 *   **Orchestration:** LangChain LCEL (LangChain Expression Language for composable pipelines)
@@ -47,6 +47,8 @@ MeetMind is built with a focus on modularity, leveraging a mix of local edge-com
 2. **Set up Environment Variables:**
    Create a `.env` file in the root directory and add your API keys:
    ```env
+   GOOGLE_API_KEY="your_google_api_key_here"
+   GROQ_API_KEY="your_groq_api_key_here"
    MISTRAL_API_KEY="your_mistral_api_key_here"
    SARVAM_API_KEY="your_sarvam_api_key_here"
    WHISPER_MODEL="small"

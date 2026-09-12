@@ -327,7 +327,7 @@ with st.sidebar:
 st.markdown("""
 <div class="hero-banner">
     <h1>🧠 MeetMind</h1>
-    <p>Transform any meeting recording into actionable insights — powered by Whisper, Sarvam AI, Mistral &amp; LangChain</p>
+    <p>Transform any meeting recording into actionable insights — powered by Whisper, Sarvam AI, Gemini, Groq, Mistral &amp; LangChain</p>
 </div>
 """, unsafe_allow_html=True)
 
